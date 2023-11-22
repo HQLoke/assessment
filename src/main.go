@@ -15,7 +15,9 @@ func main() {
 	mux.HandleFunc("/api/indicator/atr", getATR)
 
 	addr	:= fmt.Sprintf(":%d", serverPort)
-	if err := http.ListenAndServe(addr, mux); err != nil {
+	fmt.Println("Server is listening on port", serverPort, "...")
+	err := http.ListenAndServe(addr, mux)
+	if err != nil {
 		fmt.Printf("error starting server: %s\n", err)
 		os.Exit(1)
 	}
