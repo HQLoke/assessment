@@ -9,7 +9,9 @@ ARCH		:=	amd64
 MAIN_DIR	:=	src/
 MAIN_SRC	:=	$(addprefix $(MAIN_DIR), \
 								 main.go \
-								 math.go )
+								 controller.go \
+								 math.go \
+								 parse.go)
 
 # Testing
 TEST_DIR	:=	./test

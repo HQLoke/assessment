@@ -7,10 +7,18 @@ import (
 )
 
 type dailyPrice struct {
-	openPrice  float64
-	highPrice  float64
-	lowPrice   float64
-	closePrice float64
+	openTime					int			
+	openPrice 					float64
+	highPrice 					float64
+	lowPrice  					float64
+	closePrice					float64
+	volume						float64
+	closeTime					int
+	quoteAssetVolume			float64
+	numOfTrades					int
+	takerBuyBaseAssetVolume		float64
+	takerBuyQuoteAssetVolume	float64
+	ignore						int
 }
 
 func isNumeric(s string) bool {
@@ -34,24 +42,24 @@ func findLargest(nums ...float64) float64 {
 }
 
 /*
-** The first argument, p, is a array of daily prices. It differs from a normal array
-** because the most recent data is at the beginning of the array.
+** The first argument, p, is a array of daily prices.
+** The second argument, period is required for atr calculation.
 **
 ** acronyms:
 ** hml = today's high minus low
 ** hmcp = absolute value of today's high minus yesterday's closing price
 ** lmcp = absolute value of today's low minus yesterday's closing price
  */
-func calcATR(p []dailyPrice, period int) float64 {
+func calcATR(p [][]float64, period int) float64 {
 	if period >= len(p) {
 		return -1
 	}
 
 	sum := float64(0)
 	for i := 0; i < period; i += 1 {
-		hml := p[i].highPrice - p[i].lowPrice
-		hmcp := math.Abs(p[i].highPrice - p[i+1].closePrice)
-		lmcp := math.Abs(p[i].lowPrice - p[i+1].closePrice)
+		hml := p[i][1] - p[i][2]
+		hmcp := math.Abs(p[i][1] - p[i+1][3])
+		lmcp := math.Abs(p[i][2] - p[i+1][3])
 
 		max := findLargest(hml, hmcp, lmcp)
 		sum += max
